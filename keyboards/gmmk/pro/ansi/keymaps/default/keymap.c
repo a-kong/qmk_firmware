@@ -75,9 +75,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (clockwise) {
-      tap_code(KC_VOLU);
+        tap_code(KC_VOLU);
     } else {
-      tap_code(KC_VOLD);
+        tap_code(KC_VOLD);
     }
     return false;
 }
@@ -91,24 +91,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 host_consumer_send(0);
             }
-            return false;  // Skip all further processing of this key
+            return false; // Skip all further processing of this key
         case KC_LAUNCHPAD:
             if (record->event.pressed) {
                 host_consumer_send(0x2A0);
             } else {
                 host_consumer_send(0);
             }
-            return false;  // Skip all further processing of this key
+            return false; // Skip all further processing of this key
         default:
-            return true;  // Process all other keycodes normally
+            return true; // Process all other keycodes normally
     }
 }
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-  rgb_matrix_set_color_all(50, 137, 168);
 
-  if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(3, 255, 0, 0); //capslock key
+  rgb_matrix_set_color_all(75, 39, 107);
+
+    if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
+        for (uint8_t i = led_min; i <= led_max; i++) {
+            if (g_led_config.flags[i] & LED_FLAG_UNDERGLOW) {
+                // led 82 to 97
+                rgb_matrix_set_color(i, 173, 9, 146);
+            }
+        }
+        rgb_matrix_set_color(0, 173, 9, 146);
+        rgb_matrix_set_color(72, 173, 9, 146);
+        rgb_matrix_set_color(75, 173, 9, 146);
+        rgb_matrix_set_color(86, 173, 9, 146);
+        rgb_matrix_set_color(82, 173, 9, 146);
     }
-
 }
